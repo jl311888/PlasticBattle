@@ -155,7 +155,9 @@ public func routes(_ router: Router) throws {
         }
         
         //print(base64)
-        
+        if base64 == "" {
+            return "empty"
+        }
         return base64
         
     }
