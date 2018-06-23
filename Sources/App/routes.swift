@@ -121,10 +121,13 @@ public func routes(_ router: Router) throws {
             
             //return Future( //Response(http: HTTPResponse(status: .notFound), using: req)
         }
-
-        let imageData = try Data(contentsOf: url)
-        let base64 = imageData.base64EncodedString()
-        print(base64)
+        var base64 = "empty"
+        try DispatchQueue.global().sync {
+            let imageData = try Data(contentsOf: url)
+            base64 = imageData.base64EncodedString()
+            print(base64)
+        }
+        
 
         return base64//Response(http: HTTPResponse(status: .ok), using: req)
     }
