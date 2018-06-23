@@ -104,7 +104,7 @@ public func routes(_ router: Router) throws {
     }
     
     
-    router.get("get", "image") { req -> Response in
+    router.get("get", "image") { req -> String in
 
         guard
             let url1 = req.query[String.self, at: "img"] else {
@@ -114,15 +114,16 @@ public func routes(_ router: Router) throws {
         //let headers = HTTPHeaders([("Content-Type", "application/json")])
 
         guard let url = URL(string: urlString) else {
-            print("failed to create url")
-            return Response(http: HTTPResponse(status: .notFound), using: req)
+            return "failed to create url"
+            
+            //return Future( //Response(http: HTTPResponse(status: .notFound), using: req)
         }
 
         let imageData = try Data(contentsOf: url)
         let base64 = imageData.base64EncodedString()
         print(base64)
 
-        return Response(http: HTTPResponse(status: .ok), using: req)
+        return base64//Response(http: HTTPResponse(status: .ok), using: req)
     }
 
     router.delete("station") { req -> Future<Response> in
