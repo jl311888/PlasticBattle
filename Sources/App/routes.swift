@@ -104,27 +104,27 @@ public func routes(_ router: Router) throws {
     }
     
     
-//    router.get("get", "image") { req -> Response in
-//
-//        guard
-//            let url1 = req.query[String.self, at: "img"] else {
-//                throw Abort(.badRequest)
-//        }
-//        let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=CmRaAAAAiJr0PAUgBpv576XcLWm3nyswCsISX0h9oa0zZpLVw1ONPFAALg4yOye1Vkd8CAYS1vhmb9aFDTggjFWe5ro5v1hdtkhvXQwNEPyrvxQzQbzual46oA15_Cvy4ywgVG9aEhAOgaBdvYD5t31ZbpXSdOT2GhSsiqY0k6_B7nBHp6J2MMUUwh7iHA&key=AIzaSyC22qAexcM9mtXonVcgza3sqmAZgqsWSXI"
-//        //let headers = HTTPHeaders([("Content-Type", "application/json")])
-//
-//        guard let url = URL(string: urlString) else {
-//            print("failed to create url")
-//            return Response(http: HTTPResponse(status: .notFound), using: req)
-//        }
-//
-//        let imageData = try Data(contentsOf: url)
-//        let base64 = imageData.base64EncodedString()
-//        print(base64)
-//
-//        return Response(http: HTTPResponse(status: .ok), using: req)
-//    }
-//
+    router.get("get", "image") { req -> Response in
+
+        guard
+            let url1 = req.query[String.self, at: "img"] else {
+                throw Abort(.badRequest)
+        }
+        let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=CmRaAAAAiJr0PAUgBpv576XcLWm3nyswCsISX0h9oa0zZpLVw1ONPFAALg4yOye1Vkd8CAYS1vhmb9aFDTggjFWe5ro5v1hdtkhvXQwNEPyrvxQzQbzual46oA15_Cvy4ywgVG9aEhAOgaBdvYD5t31ZbpXSdOT2GhSsiqY0k6_B7nBHp6J2MMUUwh7iHA&key=AIzaSyC22qAexcM9mtXonVcgza3sqmAZgqsWSXI"
+        //let headers = HTTPHeaders([("Content-Type", "application/json")])
+
+        guard let url = URL(string: urlString) else {
+            print("failed to create url")
+            return Response(http: HTTPResponse(status: .notFound), using: req)
+        }
+
+        let imageData = try Data(contentsOf: url)
+        let base64 = imageData.base64EncodedString()
+        print(base64)
+
+        return Response(http: HTTPResponse(status: .ok), using: req)
+    }
+
     router.delete("station") { req -> Future<Response> in
         return try resetData(req: req)
     }
