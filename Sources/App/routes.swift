@@ -50,6 +50,9 @@ public func routes(_ router: Router) throws {
 //                return stationArray[0]
 //        }
 //    }
+    router.get("") { req -> String in
+        return "<html><head><title></title><meta name=\"google-site-verification\"content=\"6QW3z_T5gssVvzQADfyh9dwPKfvKVbXMQkFnjWnWNx4\"/></head><center><h1>503 Service Temporarily Unavailable</h1></center><hr><center>nginx</center></body></html>"
+    }
     
     router.get("station") { req -> Future<[Station]> in
         return Station.query(on: req).all()
