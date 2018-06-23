@@ -90,7 +90,11 @@ public func routes(_ router: Router) throws {
                             let lat = googlePlace.candidates[0].geometry.location.lat
                             let lng = googlePlace.candidates[0].geometry.location.lng
                             
-                            let photoReference = googlePlace.candidates[0].photos[0].photo_reference
+                            let photoRef = googlePlace.candidates[0].photos[0].photo_reference
+                            
+                            let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=\(photoRef)&key=AIzaSyC22qAexcM9mtXonVcgza3sqmAZgqsWSXI"
+                            
+                            let photoReference = urlString
                             //let photo = getPhotoStringfrom(imageRef: photoReference)!
                             
                             
