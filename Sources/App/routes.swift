@@ -91,10 +91,10 @@ public func routes(_ router: Router) throws {
                             let lng = googlePlace.candidates[0].geometry.location.lng
                             
                             let photoReference = googlePlace.candidates[0].photos[0].photo_reference
-                            let photo = getPhotoStringfrom(imageRef: photoReference)!
+                            //let photo = getPhotoStringfrom(imageRef: photoReference)!
                             
                             
-                            let station = Station(name: name, businessType: businessType, cost: cost, rate: rate, address: address, lat: lat, lng: lng, photo: photo)
+                            let station = Station(name: name, businessType: businessType, cost: cost, rate: rate, address: address, lat: lat, lng: lng, photoReference: photoReference)
                             
                             return station.save(on: req)
                             

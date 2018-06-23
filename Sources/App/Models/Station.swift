@@ -11,8 +11,8 @@ final class Station: Codable {
     var address: String
     var lat: Double
     var lng: Double
-    var photo: String
-    init(name: String, businessType: String, cost: String, rate: String, address: String, lat: Double, lng: Double, photo: String) {
+    var photoReference: String
+    init(name: String, businessType: String, cost: String, rate: String, address: String, lat: Double, lng: Double, photoReference: String) {
         
         self.name = name
         self.businessType = businessType
@@ -21,7 +21,7 @@ final class Station: Codable {
         self.address = address
         self.lat = lat
         self.lng = lng
-        self.photo = photo
+        self.photoReference = photoReference
     }
 }
 
