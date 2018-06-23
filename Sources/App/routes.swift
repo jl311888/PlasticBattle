@@ -151,7 +151,7 @@ public func routes(_ router: Router) throws {
             imageData = try Data(contentsOf: url)
             base64 = imageData!.base64EncodedString()
         } catch {
-            return nil
+            return "image data load failed"
         }
         
         //print(base64)
