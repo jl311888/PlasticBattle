@@ -113,9 +113,9 @@ public func routes(_ router: Router) throws {
             let url1 = req.query[String.self, at: "img"] else {
                 throw Abort(.badRequest)
         }
-        let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=CmRaAAAAiJr0PAUgBpv576XcLWm3nyswCsISX0h9oa0zZpLVw1ONPFAALg4yOye1Vkd8CAYS1vhmb9aFDTggjFWe5ro5v1hdtkhvXQwNEPyrvxQzQbzual46oA15_Cvy4ywgVG9aEhAOgaBdvYD5t31ZbpXSdOT2GhSsiqY0k6_B7nBHp6J2MMUUwh7iHA&key=AIzaSyC22qAexcM9mtXonVcgza3sqmAZgqsWSXI"
+        //let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=CmRaAAAAiJr0PAUgBpv576XcLWm3nyswCsISX0h9oa0zZpLVw1ONPFAALg4yOye1Vkd8CAYS1vhmb9aFDTggjFWe5ro5v1hdtkhvXQwNEPyrvxQzQbzual46oA15_Cvy4ywgVG9aEhAOgaBdvYD5t31ZbpXSdOT2GhSsiqY0k6_B7nBHp6J2MMUUwh7iHA&key=AIzaSyC22qAexcM9mtXonVcgza3sqmAZgqsWSXI"
         //let headers = HTTPHeaders([("Content-Type", "application/json")])
-
+        let urlString = "https://cdnimages.familyhomeplans.com/plans/59952/59952-b600.jpg"
         guard let url = URL(string: urlString) else {
             return "failed to create url"
             
