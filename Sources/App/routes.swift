@@ -112,6 +112,17 @@ public func routes(_ router: Router) throws {
         return Station.query(on: req).all()
     }
     
+    router.get("station", "first") { req -> Future<Station> in
+        return Station.query(on: req)
+                            .first()
+            .map(to: Station.self) { station in
+                guard let station = station else {
+                    throw Abort(.notFound)
+                }
+                return station
+        }
+    }
+    
     router.get("station", "update") { req -> Future<Station> in
         guard
             let url = req.query[String.self, at: "sht"] else {
