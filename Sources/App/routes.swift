@@ -50,9 +50,63 @@ public func routes(_ router: Router) throws {
 //                return stationArray[0]
 //        }
 //    }
-    router.get("") { req -> String in
-        return "<html><head><title></title><meta name=\"google-site-verification\"content=\"6QW3z_T5gssVvzQADfyh9dwPKfvKVbXMQkFnjWnWNx4\"/></head><center><h1>503 Service Temporarily Unavailable</h1></center><hr><center>nginx</center></body></html>"
-    }
+    
+//    // Working setting photoref to html photo link
+//    router.get("station") { req -> Future<[Station]> in
+//        return Station.query(on: req).all()
+//    }
+//
+//    router.get("station", "update") { req -> Future<Station> in
+//        guard
+//            let url = req.query[String.self, at: "sht"] else {
+//                throw Abort(.badRequest)
+//        }
+//
+//
+//        let headers = HTTPHeaders([("Content-Type", "application/json")])
+//        return try req.client().get(url, headers: headers)
+//            .flatMap(to: Sheet.self) { response -> Future<Sheet> in
+//                return try response.content.decode(Sheet.self)
+//
+//            }.flatMap(to: Station.self) { sheet -> Future<Station> in
+//                var stationArray = [Future<Station>]()
+//                for ent in sheet.feed.entry {
+//                    let headers = HTTPHeaders([("Content-Type", "application/json")])
+//                    let name = ent.gsx$name["$t"]!
+//                    let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+//                    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=\(encodedName)&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=AIzaSyACbE7_nskgmeIyTI1-p3YNo0CLVURNhY4"
+//                    print(url)
+//                    let googleReq = try req.client().get(url, headers: headers)
+//                        .flatMap(to: GooglePlace.self) { googleResponse -> Future<GooglePlace> in
+//                            return try googleResponse.content.decode(GooglePlace.self)
+//                        }.flatMap(to: Station.self) { googlePlace -> Future<Station> in
+//                            let name = ent.gsx$name["$t"]!
+//                            let businessType = ent.gsx$businesstype["$t"]!
+//                            let cost = ent.gsx$cost["$t"]!
+//                            let rate = ent.gsx$rate["$t"]!
+//                            let address = ent.gsx$address["$t"]!
+//                            let lat = googlePlace.candidates[0].geometry.location.lat
+//                            let lng = googlePlace.candidates[0].geometry.location.lng
+//
+//                            let photoRef = googlePlace.candidates[0].photos[0].photo_reference
+//
+//                            let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=\(photoRef)&key=AIzaSyACbE7_nskgmeIyTI1-p3YNo0CLVURNhY4"
+//
+//                            let photoReference = urlString
+//                            //let photo = getPhotoStringfrom(imageRef: photoReference)!
+//
+//
+//                            let station = Station(name: name, businessType: businessType, cost: cost, rate: rate, address: address, lat: lat, lng: lng, photoReference: photoReference)
+//
+//                            return station.save(on: req)
+//
+//                    }
+//                    stationArray.append(googleReq)
+//
+//                }
+//                return stationArray[0]
+//        }
+//    }
     
     router.get("station") { req -> Future<[Station]> in
         return Station.query(on: req).all()
@@ -76,8 +130,8 @@ public func routes(_ router: Router) throws {
                     let headers = HTTPHeaders([("Content-Type", "application/json")])
                     let name = ent.gsx$name["$t"]!
                     let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
-                    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=\(encodedName)&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=AIzaSyC22qAexcM9mtXonVcgza3sqmAZgqsWSXI"
-                    //print(url)
+                    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=\(encodedName)&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=AIzaSyACbE7_nskgmeIyTI1-p3YNo0CLVURNhY4"
+                    print(url)
                     let googleReq = try req.client().get(url, headers: headers)
                         .flatMap(to: GooglePlace.self) { googleResponse -> Future<GooglePlace> in
                             return try googleResponse.content.decode(GooglePlace.self)
@@ -92,9 +146,9 @@ public func routes(_ router: Router) throws {
                             
                             let photoRef = googlePlace.candidates[0].photos[0].photo_reference
                             
-                            let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=\(photoRef)&key=AIzaSyC22qAexcM9mtXonVcgza3sqmAZgqsWSXI"
+                            //let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=\(photoRef)&key=AIzaSyACbE7_nskgmeIyTI1-p3YNo0CLVURNhY4"
                             
-                            let photoReference = urlString
+                            let photoReference = getPhotoStringfrom(imageRef: photoRef)
                             //let photo = getPhotoStringfrom(imageRef: photoReference)!
                             
                             
@@ -146,11 +200,11 @@ public func routes(_ router: Router) throws {
         }
     }
     
-    func getPhotoStringfrom(imageRef: String) -> String? {
-        let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=\(imageRef)&key=AIzaSyC22qAexcM9mtXonVcgza3sqmAZgqsWSXI"
+    func getPhotoStringfrom(imageRef: String) -> String {
+        let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=\(imageRef)&key=AIzaSyACbE7_nskgmeIyTI1-p3YNo0CLVURNhY4"
         guard let url = URL(string: urlString) else {
-            print("failed to create url")
-            return nil
+            return "failed to create url"
+            
         }
         var imageData: Data?
         var base64: String?
@@ -165,7 +219,7 @@ public func routes(_ router: Router) throws {
         if base64 == "" {
             return "empty"
         }
-        return base64
+        return base64!
         
     }
 
