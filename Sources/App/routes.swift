@@ -112,6 +112,10 @@ public func routes(_ router: Router) throws {
         return Station.query(on: req).all()
     }
     
+    router.get("station", Station.parameter) { req -> Future<Station> in
+        return try req.parameters.next(Station.self)
+    }
+    
     router.get("station", "first") { req -> Future<Station> in
         return Station.query(on: req)
                             .first()
