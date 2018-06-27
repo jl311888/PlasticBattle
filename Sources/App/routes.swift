@@ -186,8 +186,12 @@ public func routes(_ router: Router) throws {
             print(base64)
         }
         
-
-        return base64//Response(http: HTTPResponse(status: .ok), using: req)
+//        if stationName.count > 25 {
+//            let endOfText = stationName.index(stationName.startIndex, offsetBy: 22)
+//            stationName = String(stationName[..<endOfText]) + "..."
+//        }
+        return String(base64.count)
+        //return base64//Response(http: HTTPResponse(status: .ok), using: req)
     }
 
     router.delete("station") { req -> Future<Response> in
@@ -222,6 +226,4 @@ public func routes(_ router: Router) throws {
         return base64!
         
     }
-
-    
 }
