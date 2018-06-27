@@ -12,7 +12,8 @@ final class Station: Codable {
     var lat: Double
     var lng: Double
     var photoReference: String
-    init(name: String, businessType: String, cost: String, rate: String, address: String, lat: Double, lng: Double, photoReference: String) {
+    var b64Photo: String
+    init(name: String, businessType: String, cost: String, rate: String, address: String, lat: Double, lng: Double, photoReference: String, b64Photo: String) {
         
         self.name = name
         self.businessType = businessType
@@ -22,9 +23,11 @@ final class Station: Codable {
         self.lat = lat
         self.lng = lng
         self.photoReference = photoReference
+        self.b64Photo = b64Photo
     }
 }
 
 extension Station: PostgreSQLModel {}
 extension Station: Migration {}
 extension Station: Content {}
+extension Station: Parameter {}

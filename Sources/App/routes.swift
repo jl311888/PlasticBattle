@@ -146,13 +146,13 @@ public func routes(_ router: Router) throws {
                             
                             let photoRef = googlePlace.candidates[0].photos[0].photo_reference
                             
-                            //let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=\(photoRef)&key=AIzaSyACbE7_nskgmeIyTI1-p3YNo0CLVURNhY4"
+                            let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=\(photoRef)&key=AIzaSyACbE7_nskgmeIyTI1-p3YNo0CLVURNhY4"
                             
-                            let photoReference = getPhotoStringfrom(imageRef: photoRef)
+                            let photoReference = urlString //getPhotoStringfrom(imageRef: photoRef)
                             //let photo = getPhotoStringfrom(imageRef: photoReference)!
                             
                             
-                            let station = Station(name: name, businessType: businessType, cost: cost, rate: rate, address: address, lat: lat, lng: lng, photoReference: photoReference)
+                            let station = Station(name: name, businessType: businessType, cost: cost, rate: rate, address: address, lat: lat, lng: lng, photoReference: photoReference, b64Photo: "")
                             
                             return station.save(on: req)
                             
@@ -164,6 +164,23 @@ public func routes(_ router: Router) throws {
         }
     }
     
+    router.put("update", Station.parameter) {
+        req -> Future<Station> in
+        return try flatMap(to: Station.self, req.parameters.next(Station.self), req.content.decode(Station.self)) {
+            station, updatedStation in
+            station.name = updatedStation.name
+            station.businessType = updatedStation.businessType
+            station.cost = updatedStation.cost
+            station.rate = updatedStation.rate
+            station.address = updatedStation.address
+            station.lat = updatedStation.lat
+            station.lng = updatedStation.lng
+            station.photoReference = updatedStation.photoReference
+            station.b64Photo = updatedStation.b64Photo
+            
+            return station.save(on: req)
+        }
+    }
     
     router.get("get", "image") { req -> String in
 
@@ -173,24 +190,43 @@ public func routes(_ router: Router) throws {
         }
         //let urlString = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference=CmRaAAAAiJr0PAUgBpv576XcLWm3nyswCsISX0h9oa0zZpLVw1ONPFAALg4yOye1Vkd8CAYS1vhmb9aFDTggjFWe5ro5v1hdtkhvXQwNEPyrvxQzQbzual46oA15_Cvy4ywgVG9aEhAOgaBdvYD5t31ZbpXSdOT2GhSsiqY0k6_B7nBHp6J2MMUUwh7iHA&key=AIzaSyC22qAexcM9mtXonVcgza3sqmAZgqsWSXI"
         //let headers = HTTPHeaders([("Content-Type", "application/json")])
+        
         let urlString = "https://cdnimages.familyhomeplans.com/plans/59952/59952-b600.jpg"
-        guard let url = URL(string: urlString) else {
-            return "failed to create url"
+        let url = URL(string: urlString)
+            //return "failed to create url"
             
             //return Future( //Response(http: HTTPResponse(status: .notFound), using: req)
-        }
-        var base64 = "empty"
-        try DispatchQueue.global().sync {
-            let imageData = try Data(contentsOf: url)
-            base64 = imageData.base64EncodedString()
-            print(base64)
+        //}
+        
+        let anotherreq = try req.client().get(url!)
+            .flatMap(to: JpegImg.self) { response -> Future<JpegImg> in
+                let img = try response.content.decode(JpegImg.self)
+                print(img)
+                return img
+                
+            }.map { response in
+                print(response.body)
         }
         
-//        if stationName.count > 25 {
-//            let endOfText = stationName.index(stationName.startIndex, offsetBy: 22)
-//            stationName = String(stationName[..<endOfText]) + "..."
+        return ""
+        
+//        return try req.client().get(url!)
+//            .map(to: HTTPMessage.self) { googleResponse in
+//                googleRespon
+//                let base64 = imageData.base64EncodedString()
+//                print(base64)
+//                return base64
 //        }
-        return String(base64.count)
+        
+//        var base64 = "empty"
+//        try DispatchQueue.global().sync {
+//            let imageData = try Data(contentsOf: url)
+//            base64 = imageData.base64EncodedString()
+//            print(base64)
+//        }
+//
+//
+//        return String(base64.count)
         //return base64//Response(http: HTTPResponse(status: .ok), using: req)
     }
 
