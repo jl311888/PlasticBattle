@@ -52,4 +52,8 @@ public func configure(
     // 4
     migrations.add(model: Station.self, database: .psql)
     services.register(migrations)
+    
+    var commandConfig = CommandConfig.default()
+    commandConfig.use(RevertCommand.self, as: "revert")
+    services.register(commandConfig)
 }
